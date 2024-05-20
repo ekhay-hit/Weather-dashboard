@@ -12,7 +12,8 @@ searchbtn.addEventListener('click', function(){
 
     let city = inputCity.value;
     console.log(city);
-    const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}`;
+    const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}&units=imperial`;
+    // const url =`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
 
     fetch(url)
     .then(function(response){
@@ -95,13 +96,6 @@ searchbtn.addEventListener('click', function(){
            fiveDaysContainer.append(dailyDiv);
 
            }
-
-
-
-           
-
-            
-
 
 
            weatherData.push(weather);
