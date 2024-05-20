@@ -12,8 +12,27 @@ searchbtn.addEventListener('click', function(){
 
     let city = inputCity.value;
     console.log(city);
-    const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}&units=imperial`;
-    // const url =`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
+   
+    const urlCordinate =`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
+    // const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}&units=imperial`;
+   
+
+
+    fetch(urlCordinate)
+    .then(function(response){
+        return response.json();
+    }).then(function(data){
+        console.log("I am here in cordinate")
+        console.log(data);
+        const cord = { 
+            lat: data[0].lat,
+            lon: data[0].lon,
+        }
+        console.log(cord.lat);
+        console.log(cord.lon);
+    });
+
+    const url =`http://api.openweathermap.org/data/2.5/weather?lat=${cord.lat}&lon=${cord.lon}&appid=${myAPIKey}&units=imperial`;
 
     fetch(url)
     .then(function(response){
@@ -25,7 +44,7 @@ searchbtn.addEventListener('click', function(){
             alert('Enter the city name');
         }
         
-        console.log("I am here");
+        console.log("I am here at Data");
         console.log(data);
 
         const  weather = {
