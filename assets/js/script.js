@@ -42,9 +42,6 @@ searchbtn.addEventListener("click", function () {
 
       console.log("I am here at Data");
       console.log(data);
-                                                                                                        console.log(data.city.name)
-                                                                                                        console.log("This is temp");
-                                                                                                        console.log(data.list[0].main.temp);
 
       let weather = {
         name: data.city.name,
@@ -83,7 +80,7 @@ searchbtn.addEventListener("click", function () {
       const secondDiv = document.createElement("div");
       secondDiv.setAttribute(
         "class",
-        "row h-25 bg-white border border-dark m-3"
+        "row h-25 bg-white shadow p-3 rounded m-3"
       );
       mainDiv.append(secondDiv);
 
