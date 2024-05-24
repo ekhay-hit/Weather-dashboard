@@ -33,11 +33,16 @@ createSearchHistory();
 
 
 searchbtn.addEventListener("click", function () {
+
+  if (inputCity.value == "") {
+    alert("Enter the city name");
+  }else{
   let city = inputCity.value;
   
   searchHistory.push(city);
   localStorage.setItem("cities", JSON.stringify(searchHistory));
   createSearchHistory();
+  }
   // let city = "orlando";
 //   if(localStorage.getItem('cities')=== null){
 //     searchHistory =[];
@@ -79,9 +84,7 @@ searchbtn.addEventListener("click", function () {
           return response.json();
         })
         .then(function (data) {
-          if (inputCity.value == "") {
-            alert("Enter the city name");
-          }
+          
 
           console.log("I am here at Data");
           console.log(data);
