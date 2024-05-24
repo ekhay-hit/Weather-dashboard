@@ -1,25 +1,64 @@
 const searchbtn = document.querySelector("#search-btn");
 const weatherContainer = document.querySelector(".main");
 const inputCity = document.querySelector("#city");
-const search = document.querySelector("search");
+const search = document.querySelector(".search");
+const searchDiv = document.querySelector(".main");
+const divHistory = document.querySelector(".divHistory")
 const myAPIKey = "c3dce583129645e5fbfd8906c1347162";
 // const city = inputCity.value;
 
 const weatherData = [];
-// let  searchHistory;
+let searchHistory;
+
+
+console.log(searchHistory);
+// <button id="search-btn" class="btn btn-info mt-3 form-control ">Search</button>
+function createSearchHistory(){
+
+if(localStorage.getItem('cities')=== null){
+  searchHistory =[];
+}else{
+  searchHistory=JSON.parse(localStorage.getItem("cities"))
+}
+divHistory.textContent="";
+for(city of searchHistory){
+const historyBtn = document.createElement('button');
+historyBtn.setAttribute("class","btn btn-secondary mt-3 form-control ");
+historyBtn.textContent = city;
+divHistory.append(historyBtn);
+}
+};
+
+createSearchHistory();
+
 
 searchbtn.addEventListener("click", function () {
   let city = inputCity.value;
+  
+  searchHistory.push(city);
+  localStorage.setItem("cities", JSON.stringify(searchHistory));
+  createSearchHistory();
   // let city = "orlando";
-
-  // searchHistory.push(city);
-  // localStorage.setItem("city",JSON.stringify(searchHistory))
-  // console.log(city);
+//   if(localStorage.getItem('cities')=== null){
+//     searchHistory =[];
+//   }else{
+//     searchHistory=JSON.parse(localStorage.getItem("cities"))
+//   }
+//   searchHistory.push(city);
+// localStorage.setItem("cities", JSON.stringify(searchHistory));
+// console.log(searchHistory);
+// // <button id="search-btn" class="btn btn-info mt-3 form-control ">Search</button>
+// for(city of searchHistory){
+//   const button = document.createElement('button');
+//   button.setAttribute("class","btn btn-seconday mt-3 form-control ");
+//   button.textContent = city;
+//   search.append(button);
+// }
 
   const urlCordinate = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
   // const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}&units=imperial`;
 
-  let cord = {};
+  // let cord = {};
 
   fetch(urlCordinate)
     .then(function (response) {
