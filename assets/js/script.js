@@ -83,12 +83,12 @@ searchbtn.addEventListener("click", function () {
           console.log(weatherData);
 
           const mainDiv = document.createElement("div");
-          mainDiv.setAttribute("class", "row w-75 m-5 ");
+          mainDiv.setAttribute("class", "row w-75 m-5 shadow rounded p-5 ");
           //****************** */
           const secondDiv = document.createElement("div");
           secondDiv.setAttribute(
             "class",
-            "col-2 ms-5 bg-danger "
+            "col-3 ms-5 lead fs-4 "
           );
           mainDiv.append(secondDiv);
 
@@ -103,9 +103,9 @@ searchbtn.addEventListener("click", function () {
             iconDiv.append(icon);
             mainDiv.append(iconDiv);
 
-          let cityName = document.createElement("span");
+          let cityName = document.createElement("h3");
           cityName.textContent = `${weatherData[0].name} ${weatherData[0].date}`;
-          cityName.setAttribute("class","h5 h-75 col-3 ")
+          cityName.setAttribute("class","h5 fs-3  lead")
           secondDiv.append(cityName);
           
           let temp = document.createElement("p");
@@ -127,7 +127,7 @@ searchbtn.addEventListener("click", function () {
           // 5 day implementation
 
           const fiveDaysH3 = document.createElement("span");
-          fiveDaysH3.setAttribute("class", "row h3 ms-5 pt-4 w-75 ");
+          fiveDaysH3.setAttribute("class", "row h3 py-3 ms-5 w-75 ");
           fiveDaysH3.textContent = `5-Days Forecase:`;
           mainDiv.append(fiveDaysH3);
 
@@ -146,6 +146,11 @@ searchbtn.addEventListener("click", function () {
             cityName.textContent = `${weatherData[i].date}`;
             dailyDiv.append(cityName);
 
+            icon = document.createElement("img");
+            icon.setAttribute('src',`https://openweathermap.org/img/w/${weatherData[i].icon}.png`)
+            icon.textContent = `Icon: ${weatherData[0].icon}`;
+            dailyDiv.append(icon);
+
             temp = document.createElement("p");
             temp.textContent = `Temp: ${weatherData[i].temp} F`;
             dailyDiv.append(temp);
@@ -157,11 +162,7 @@ searchbtn.addEventListener("click", function () {
             humidity = document.createElement("p");
             humidity.textContent = `Humidity: ${weatherData[i].humidity} %`;
             dailyDiv.append(humidity);
-         icon = document.createElement("img");
-          icon.setAttribute('src',`https://openweathermap.org/img/w/${weatherData[i].icon}.png`)
-          icon.textContent = `Icon: ${weatherData[0].icon}`;
-          dailyDiv.append(icon);
-
+         
             fiveDaysContainer.append(dailyDiv);
           }
 
