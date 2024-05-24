@@ -10,6 +10,7 @@ const weatherData = [];
 
 searchbtn.addEventListener("click", function () {
   let city = inputCity.value;
+  // let city = "orlando";
 
   // searchHistory.push(city);
   // localStorage.setItem("city",JSON.stringify(searchHistory))
@@ -45,11 +46,13 @@ searchbtn.addEventListener("click", function () {
 
           console.log("I am here at Data");
           console.log(data);
+          let today = dayjs().format("DD/MM/YYYY");
+          console.log(`Today is ${today}`)
 
           let weather = {
             name: data.city.name,
             // date: dayjs().format("MM/DD/YYYY"),
-            date: data.list[0].dt_txt,
+            date: today,
             icon: data.list[0].weather[0].icon,
             temp: data.list[0].main.temp,
             wind: data.list[0].wind.speed,
@@ -58,11 +61,13 @@ searchbtn.addEventListener("click", function () {
           };
           weatherData.push(weather);
           let i = 39;
+          let day = 5;
           while (i > 0) {
+            today =dayjs().add(day,'day').format("DD/MM/YYYY"),
             weather = {
               // JSON.stringify(json.weather[0].icon);
               // date: dayjs().format("MM/DD/YYYY"),
-              date: data.list[i].dt_txt,
+              date: today,
               icon: data.list[i].weather[0].icon,
               temp: data.list[i].main.temp,
               wind: data.list[i].wind.speed,
@@ -70,6 +75,7 @@ searchbtn.addEventListener("click", function () {
               // localStorage.setItem("weather", JSON.stringify(weatherData));
             };
             weatherData.push(weather);
+            day--;
             i = i - 8;
           }
 
@@ -77,25 +83,31 @@ searchbtn.addEventListener("click", function () {
           console.log(weatherData);
 
           const mainDiv = document.createElement("div");
-          mainDiv.setAttribute("class", "col-9 justify-content-center");
+          mainDiv.setAttribute("class", "row w-75 m-5 ");
           //****************** */
           const secondDiv = document.createElement("div");
           secondDiv.setAttribute(
             "class",
-            "row h-25 bg-danger shadow p-3 rounded m-3"
+            "col-2 ms-5 bg-danger "
           );
           mainDiv.append(secondDiv);
 
-          let cityName = document.createElement("h3");
+            const iconDiv = document.createElement("div");
+            iconDiv.setAttribute('class',"col-3")
+
+            let icon = document.createElement("img");
+            icon.setAttribute('src',`https://openweathermap.org/img/w/${weatherData[0].icon}.png`)
+            icon.setAttribute('id', 'todayIcon');
+            icon.setAttribute("class","col-2 ")
+            icon.textContent = `Icon: ${weatherData[0].icon}`;
+            iconDiv.append(icon);
+            mainDiv.append(iconDiv);
+
+          let cityName = document.createElement("span");
           cityName.textContent = `${weatherData[0].name} ${weatherData[0].date}`;
+          cityName.setAttribute("class","h5 h-75 col-3 ")
           secondDiv.append(cityName);
-
-          let icon = document.createElement("img");
-          icon.setAttribute('src',`https://openweathermap.org/img/w/${weatherData[0].icon}.png`)
-          icon.setAttribute('id', 'todayIcon');
-          icon.textContent = `Icon: ${weatherData[0].icon}`;
-          secondDiv.append(icon);
-
+          
           let temp = document.createElement("p");
           temp.textContent = `Temp: ${weatherData[0].temp} F`;
           secondDiv.append(temp);
@@ -114,21 +126,21 @@ searchbtn.addEventListener("click", function () {
 
           // 5 day implementation
 
-          const fiveDaysH3 = document.createElement("h3");
-          fiveDaysH3.setAttribute("class", "m-4");
+          const fiveDaysH3 = document.createElement("span");
+          fiveDaysH3.setAttribute("class", "row h3 ms-5 pt-4 w-75 ");
           fiveDaysH3.textContent = `5-Days Forecase:`;
           mainDiv.append(fiveDaysH3);
 
           const fiveDaysContainer = document.createElement("div");
           fiveDaysContainer.setAttribute(
             "class",
-            "row h-25  gap-4 text-white justify-content-center"
+            "row   gap-4 text-white justify-content-center"
           );
           mainDiv.append(fiveDaysContainer);
 
           for (let i = 5; i > 0; i--) {
             let dailyDiv = document.createElement("div");
-            dailyDiv.setAttribute("class", "col-2 p-3 h-75 bg-dark");
+            dailyDiv.setAttribute("class", "col-2 p-3 h-100 bg-dark");
 
             cityName = document.createElement("h5");
             cityName.textContent = `${weatherData[i].date}`;
