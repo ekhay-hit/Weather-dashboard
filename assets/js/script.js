@@ -7,7 +7,7 @@ const myAPIKey = "c3dce583129645e5fbfd8906c1347162";
 
 const weatherData = [];
 // let  searchHistory;
-
+country
 searchbtn.addEventListener("click", function () {
   let city = inputCity.value;
 
@@ -32,7 +32,8 @@ searchbtn.addEventListener("click", function () {
       let lon = data[0].lon;
       console.log(lon);
       console.log(lat);
-      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${myAPIKey}&units=imperial`;
+      // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${myAPIKey}&units=imperial`;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city},{country code}&appid=appid=${myAPIKey}&units=imperial`;
 
       fetch(url)
         .then(function (response) {
