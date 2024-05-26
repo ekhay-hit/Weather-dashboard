@@ -36,13 +36,10 @@ searchbtn.addEventListener("click", function () {
 
   if (inputCity.value == "") {
     alert("Enter the city name");
-  }else{
+  }
   let city = inputCity.value;
   
-  searchHistory.push(city);
-  localStorage.setItem("cities", JSON.stringify(searchHistory));
-  createSearchHistory();
-  }
+ 
   // let city = "orlando";
 //   if(localStorage.getItem('cities')=== null){
 //     searchHistory =[];
@@ -85,6 +82,10 @@ searchbtn.addEventListener("click", function () {
         })
         .then(function (data) {
           
+          searchHistory.push(data.city.name);
+          localStorage.setItem("cities", JSON.stringify(searchHistory));
+          createSearchHistory();
+          
 
           console.log("I am here at Data");
           console.log(data);
@@ -125,7 +126,7 @@ searchbtn.addEventListener("click", function () {
           console.log(weatherData);
 
           const mainDiv = document.createElement("div");
-          mainDiv.setAttribute("class", "row w-75 m-5 shadow rounded p-5 ");
+          mainDiv.setAttribute("class", "row w-75 shadow rounded p-5 ");
           //****************** */
           const secondDiv = document.createElement("div");
           secondDiv.setAttribute(
