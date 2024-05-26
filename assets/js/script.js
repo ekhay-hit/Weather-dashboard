@@ -5,13 +5,14 @@ const search = document.querySelector(".search");
 const searchDiv = document.querySelector(".main");
 const divHistory = document.querySelector(".divHistory")
 const myAPIKey = "c3dce583129645e5fbfd8906c1347162";
+const btnclicked = document.querySelectorAll(".btn");
 // const city = inputCity.value;
 
 const weatherData = [];
 let searchHistory;
 
 
-console.log(searchHistory);
+// console.log(searchHistory);
 // <button id="search-btn" class="btn btn-info mt-3 form-control ">Search</button>
 function createSearchHistory(){
 
@@ -31,6 +32,16 @@ divHistory.append(historyBtn);
 
 createSearchHistory();
 
+divHistory.addEventListener("click", function(e){
+ 
+  console.log('hey hey btn clicked');
+  
+   city = e.target.textContent;
+   console.log(city);
+
+})
+
+
 
 searchbtn.addEventListener("click", function () {
 
@@ -39,28 +50,9 @@ searchbtn.addEventListener("click", function () {
   }
   let city = inputCity.value;
   
- 
-  // let city = "orlando";
-//   if(localStorage.getItem('cities')=== null){
-//     searchHistory =[];
-//   }else{
-//     searchHistory=JSON.parse(localStorage.getItem("cities"))
-//   }
-//   searchHistory.push(city);
-// localStorage.setItem("cities", JSON.stringify(searchHistory));
-// console.log(searchHistory);
-// // <button id="search-btn" class="btn btn-info mt-3 form-control ">Search</button>
-// for(city of searchHistory){
-//   const button = document.createElement('button');
-//   button.setAttribute("class","btn btn-seconday mt-3 form-control ");
-//   button.textContent = city;
-//   search.append(button);
-// }
 
   const urlCordinate = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
-  // const url =`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myAPIKey}&units=imperial`;
-
-  // let cord = {};
+ 
 
   fetch(urlCordinate)
     .then(function (response) {
@@ -84,6 +76,7 @@ searchbtn.addEventListener("click", function () {
           
           searchHistory.push(data.city.name);
           localStorage.setItem("cities", JSON.stringify(searchHistory));
+
           createSearchHistory();
           
 
