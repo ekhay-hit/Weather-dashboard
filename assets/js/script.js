@@ -1,3 +1,4 @@
+// elements selectors
 const searchbtn = document.querySelector("#search-btn");
 const weatherContainer = document.querySelector(".main");
 const inputCity = document.querySelector("#city");
@@ -7,22 +8,22 @@ const mainDiv = document.querySelector(".main-div");///
 const divHistory = document.querySelector(".divHistory")
 const myAPIKey = "c3dce583129645e5fbfd8906c1347162";
 const btnclicked = document.querySelectorAll(".btn");
-// const city = inputCity.value;
 
+// veraibles declarations
 const weatherData = [];
 let searchHistory;
 
-
-// console.log(searchHistory);
-// <button id="search-btn" class="btn btn-info mt-3 form-control ">Search</button>
+// rendering search history function
 function createSearchHistory(){
   mainDiv.classList.remove("d-none");
+  // if search array is empty initialize the array otherwise render the search history
 if(localStorage.getItem('cities')=== null){
   searchHistory =[];
 }else{
-  searchHistory=JSON.parse(localStorage.getItem("cities"))
-
+searchHistory=JSON.parse(localStorage.getItem("cities"))
+// remove any history that is rendered
 divHistory.textContent="";
+// renders search history
 for(city of searchHistory){
 const historyBtn = document.createElement('button');
 historyBtn.setAttribute("class","btn btn-secondary mt-3 form-control ");
@@ -31,36 +32,39 @@ divHistory.append(historyBtn);
 }
   }
 }
+
+// calling the search history
 createSearchHistory();
 
+// fetching function that even listner calls
 function fetchDta (city){
+  // empty the previous search information
   initialize();
-  
+  // call fetchData function
   fetchData(city);
 
 }
 
+// This is the function that fetch data
 function fetchData(city){
   
-  // if (inputCity.value == "") {
-  //   alert("Enter the city name");
-  // }
-  // mainDiv.textContent= "";
-  // location.reload();
+  // url tto get cordinate of the city
   const urlCordinate = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myAPIKey}&units=imperial`;
  
+  //fetch data from url and return json
   fetch(urlCordinate)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log("I am here in cordinate");
+      // printing data to console
       console.log(data);
 
       let lat = data[0].lat;
       let lon = data[0].lon;
-      console.log(lon);
-      console.log(lat);
+    
+      // url to fetch data of the weather
+
       const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${myAPIKey}&units=imperial`;
 
       fetch(url)
@@ -69,10 +73,15 @@ function fetchData(city){
         })
         .then(function (data) {
           
+          // if the city is not already in the array, unshift the city to the begining of the array and save to local storage
           if (!(searchHistory.includes(data.city.name))){
+
           searchHistory.unshift(data.city.name);
           localStorage.setItem("cities", JSON.stringify(searchHistory));
+
           }else{
+
+            // if it is in the array  find the index 
             let index = searchHistory.findIndex(x => x == data.city.name);
             
            // remove the element that is in index in the array searchhistory
@@ -82,43 +91,14 @@ function fetchData(city){
             // save changes to local storage
             localStorage.setItem("cities", JSON.stringify(searchHistory));
           }
+
+          // call to create search history
           createSearchHistory();
-          
-          console.log("I am here at Data");
-          console.log(data);
+          // todays date with the format 
           let today = dayjs().format("DD/MM/YYYY");
-          console.log(`Today is ${today}`)
-
-          let weather = {
-            name: data.city.name,
-            date: today,
-            icon: data.list[0].weather[0].icon,
-            temp: data.list[0].main.temp,
-            wind: data.list[0].wind.speed,
-            humidity: data.list[0].main.humidity,
-          };
-
-          // weatherData.push(weather);
-          // let i = 39;
-          // 
-          // while (i > 0) {
-          //   today =dayjs().add(day,'day').format("DD/MM/YYYY"),
-          //   weather = {
-          //     date: today,
-          //     icon: data.list[i].weather[0].icon,
-          //     temp: data.list[i].main.temp,
-          //     wind: data.list[i].wind.speed,
-          //     humidity: data.list[i].main.humidity,
-          //   };
-          //   weatherData.push(weather);
-          //   day--;
-          //   i = i - 8;
-          // }
-
-          // console.log("I am here after finishing the array");
-          // console.log(weatherData);
-          // let day = 5;
-          //       today =dayjs().add(day,'day').format("DD/MM/YYYY");
+        
+          // create html element that are required to hold data
+          // div that hold all the elements 
 
           const secondDiv = document.createElement("div");
           secondDiv.setAttribute(
@@ -128,10 +108,11 @@ function fetchData(city){
 
           mainDiv.append(secondDiv);
 
+            // div that hold the icon for current day
+
             const iconDiv = document.createElement("div");
             secondDiv.textContent="";
             iconDiv.setAttribute('class',"col-3")
-
             let icon = document.createElement("img");
             icon.setAttribute('src',`https://openweathermap.org/img/w/${data.list[0].weather[0].icon}.png`)
             icon.setAttribute('id', 'todayIcon');
@@ -140,31 +121,29 @@ function fetchData(city){
             iconDiv.append(icon);
             mainDiv.append(iconDiv);
 
-             // icon: data.list[i].weather[0].icon,
-          // temp: data.list[i].main.temp,
-          // wind: data.list[i].wind.speed,
-          // humidity: data.list[i].main.humidity,
-        
+          // header for date
+
           today =dayjs().format("DD/MM/YYYY");
           let cityName = document.createElement("h3");
           cityName.textContent = `${data.city.name} ${today}`
           cityName.setAttribute("class","h5 fs-3  lead")
           secondDiv.append(cityName);
           
+          // element holder for temp
           let temp = document.createElement("p");
-          temp.textContent = `Temp: ${data.list[0].main.temp} F`;
+          temp.textContent = `Temp: ${data.list[0].main.temp} °F`;
           secondDiv.append(temp);
 
+          // element holder for wind 
           let wind = document.createElement("p");
           wind.textContent = `Wind: ${data.list[0].wind.speed} MPH`;
           secondDiv.append(wind);
 
+          // element holder for humadity
           let humidity = document.createElement("p");
           humidity.textContent = `Humidity: ${data.list[0].main.humidity} %`;
           secondDiv.append(humidity);
 
-          
-          // appending mainDiv to weatherContainer
           weatherContainer.append(mainDiv);
 
           // 5 day implementation
@@ -199,7 +178,7 @@ function fetchData(city){
             dailyDiv.append(icon);
 
             temp = document.createElement("p");
-            temp.textContent = `Temp: ${data.list[i].main.temp} F`;
+            temp.textContent = `Temp: ${data.list[i].main.temp} °F`;
             dailyDiv.append(temp);
 
             wind = document.createElement("p");
@@ -215,35 +194,34 @@ function fetchData(city){
             day++;
           }
 
-          // storeData(){
-
-          // }
         });
     });
-    // history.go();
+    
 }
 
+// function to initialize the weather main div element
 function initialize(){
   mainDiv.textContent = '';
- 
-  // secondDiv.textContent ='';
-  // fiveDaysContainer = '';
-  // fiveDaysH3 = '';
 }
 
+// even listner for search button 
 searchbtn.addEventListener("click", function(){
+    if (inputCity.value == "") {
+    alert("Enter the city name");
+  }
   let city = inputCity.value;
 
   fetchDta(city);
 });
 
+// even listner for search history button
 divHistory.addEventListener("click", function(e){
  
   console.log('hey hey btn clicked');
  
    city = e.target.textContent;
    console.log(city);
-  // history.go();
+  
   fetchDta(city);
 
 })
